@@ -18,6 +18,7 @@ import { CatchUserTeamDto } from "./dto/catchUserTeamDto";
 import { TestDto } from "./dto/test.dto";
 import { CatchUserTaskDto } from "./dto/catchtaskusercreator.dto";
 import { Showuserteamdto } from "./dto/showuserteam.dto";
+import { getDataUserDto } from "./dto/getDataUser.dto";
 
 
 @Injectable()
@@ -192,8 +193,7 @@ export class AuthService{
         console.error("Error no hay equipos para el usuario ", error);
       }
     }
-
-
+////////////////////////////////////////////////////////////////////////////////////
     async showUsersInTeam({name}:Showuserteamdto){
       try{
         const team= await this.teamService.findOneByName(name);
@@ -204,9 +204,15 @@ export class AuthService{
         console.error("Error")
       }
     }
-    
-      
-    
+    ////////////////////////////////////////////////
+    async getDataUser({email}:getDataUserDto){
+      const user= await this.usersService.findOneByEmail(email);
+      if(!user){
+        throw new NotFoundException ('user not found');
+      }
+
+      return user;
+    }
 }
   
   

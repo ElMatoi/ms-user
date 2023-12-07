@@ -14,6 +14,7 @@ import { CatchUserTeamDto } from "./dto/catchUserTeamDto";
 import { TestDto } from "./dto/test.dto";
 import { CatchUserTaskDto } from "./dto/catchtaskusercreator.dto";
 import { Showuserteamdto } from "./dto/showuserteam.dto";
+import { getDataUserDto } from "./dto/getDataUser.dto";
 
 @Controller('auth') 
 export class AuthController{
@@ -33,6 +34,13 @@ export class AuthController{
         showusersinteam: Showuserteamdto,
     ){
         return this.authService.showUsersInTeam(showusersinteam);
+    }
+    @Post('getDataUser')
+    getDataUser(
+        @Body()
+        getdatauserdto: getDataUserDto,
+    ){
+        return this.authService.getDataUser(getdatauserdto);
     }
 
 
