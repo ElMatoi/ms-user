@@ -19,6 +19,7 @@ import { TestDto } from "./dto/test.dto";
 import { CatchUserTaskDto } from "./dto/catchtaskusercreator.dto";
 import { Showuserteamdto } from "./dto/showuserteam.dto";
 import { getDataUserDto } from "./dto/getDataUser.dto";
+import { QueryUserProjectDto } from "./dto/queryuserproject.dto";
 
 
 @Injectable()
@@ -213,7 +214,22 @@ export class AuthService{
 
       return user;
     }
-}
+    async getUserTeamIdProjects({idUser}:QueryUserProjectDto){
+      const teamuser= await this.userteamService.queryUserTeamIDProject(idUser);
+      if(!teamuser){
+        throw new NotFoundException ('user havent teams');
+        }
+       
+      return  teamuser;
+      }
+     
+    
+   
+    
+    }
+
+
+
   
   
   

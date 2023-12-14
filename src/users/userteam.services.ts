@@ -41,6 +41,20 @@ export class UseTeamService {
         return null;
       }
     }
+    async queryUserTeamIDProject(userId: number): Promise<number | null> {
+      try {
+        const userTeam = await this.userTeamRepository.findOne({
+          where: { user: { id: userId } },
+          relations: ['team'],
+        });
+    
+        return userTeam ? userTeam.id : null; 
+      } catch (error) {
+        console.error("Error en findOneByUserIdAndTeamId:", error);
+        return null;
+      }
+    }
+    
     async showUsersInTeam(teamId:number){
       try{
         const team= await this.userTeamRepository.find({

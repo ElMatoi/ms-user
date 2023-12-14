@@ -15,12 +15,21 @@ import { TestDto } from "./dto/test.dto";
 import { CatchUserTaskDto } from "./dto/catchtaskusercreator.dto";
 import { Showuserteamdto } from "./dto/showuserteam.dto";
 import { getDataUserDto } from "./dto/getDataUser.dto";
+import { QueryUserProjectDto } from "./dto/queryuserproject.dto";
 
 @Controller('auth') 
 export class AuthController{
     constructor(
         private readonly authService: AuthService,
     ){}
+
+    @Post('getProjectUser')
+    getProjectUser(
+        @Body()
+        getprojectuserdto: QueryUserProjectDto,
+    ){
+        return this.authService.getUserTeamIdProjects(getprojectuserdto);
+    }
     @Post('ShowTeamUser')
     ShowTeamUser(
         @Body()
