@@ -42,19 +42,22 @@ export class UseTeamService {
         return null;
       }
     }
-    async queryUserTeamIDProject(userId: number): Promise<number | null> {
+    async queryUserTeamIDs(userId: number): Promise<number[] | null> {
       try {
-        const userTeam = await this.userTeamRepository.findOne({
+       
+        const userTeams = await this.userTeamRepository.find({
           where: { user: { id: userId } },
-          relations: ['team'],
+          
         });
     
-        return userTeam ? userTeam.id : null; 
+        
+        return userTeams.map(userTeam => userTeam.id);
       } catch (error) {
-        console.error("Error en findOneByUserIdAndTeamId:", error);
+        console.error("Error en queryUserTeamIDs:", error);
         return null;
       }
     }
+    
     
     async showUsersInTeam(teamId:number){
       try{

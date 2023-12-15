@@ -231,7 +231,7 @@ export class AuthService{
       return user;
     }
     async getUserTeamIdProjects({idUser}:QueryUserProjectDto){
-      const teamuser= await this.userteamService.queryUserTeamIDProject(idUser);
+      const teamuser= await this.userteamService.queryUserTeamIDs(idUser);
       if(!teamuser){
         throw new NotFoundException ('user havent teams');
         }
