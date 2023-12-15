@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/user/create-user.dto';
 import { CreateUserTeamDto } from './dto/user/create-user-team';
 import { Repository } from 'typeorm';
-import { UpdateRolUserDto } from './dto/user/update-roluser.dto';
+
 import {UserTeam} from './entities/userTeam.entity'; 
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult } from 'typeorm';
+import { Showuserteamdto } from 'src/auth/dto/showuserteam.dto';
 
 
 export class UseTeamService {
@@ -110,15 +111,22 @@ export class UseTeamService {
       }));
       return resultRol;
     }
-    
-    async removeAllUsersFromTeam(teamId: number): Promise<DeleteResult> {
-      // Elimina todos los registros de UserTeam que pertenecen al equipo con el ID especificado.
-      return this.userTeamRepository
-        .createQueryBuilder()
-        .delete()
-        .from(UserTeam)
-        .where('teamId = :teamId', { teamId })
-        .execute();
+    async removeUserTeamsByTeamId(teamId: number): Promise<DeleteResult> {
+      try {
+        
+        const result = await this.userTeamRepository.delete({ team: { id: teamId } });
+  
+        if (result.affected === 0) {
+          throw new NotFoundException('No se encontraron usuarios en el equipo');
+        }
+  
+        return result;
+      } catch (error) {
+        console.error('Error al eliminar :', error);
+        throw error; 
+      }
     }
+    
+   
    
 }

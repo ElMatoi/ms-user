@@ -116,16 +116,32 @@ export class AuthService{
    
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       
-     async deleteTeam({name}:DeleteTeamDto){ // delete one team and members in this
-        const team=await this.teamService.findOneByName(name);
+  async deleteTeam({ name }: DeleteTeamDto): Promise<boolean> {
+    try {
+      console.log(name);
+
+      // Buscar el equipo por nombre
+      const team = await this.teamService.findOneByName(name);
+
+      if (!team) {
         
-        if (!team ) {
-          // Handle errors, e.g., team or user not found
-          throw new NotFoundException('Team  not found');
-        }
-        await this.teamService.deleteByName(name);
-        await this.userteamService.removeAllUsersFromTeam(team.id);
+        throw new NotFoundException('Team not found');
       }
+
+     
+      await this.userteamService.removeUserTeamsByTeamId(team.id);
+
+      
+      await this.teamService.deleteTeamByName(name);
+
+      return true;
+    } catch (error) {
+      
+      console.error('Error ', error);
+     
+      throw new Error('Error');
+    }
+  }
 
       private generateToken(userId: number): string {
       // ervicio JwtService para generar token

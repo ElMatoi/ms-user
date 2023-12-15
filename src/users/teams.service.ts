@@ -35,15 +35,19 @@ export class TeamService {
   update(id: number, updateTeamDto: UpdateTeamDto) {
     return `This action updates a #${id} team`;
   }
-  async deleteByName(name: string) {
-    const team = await this.findOneByName(name);
+  async deleteTeamByName(name: string): Promise<void> {
+    try {
+      const result = await this.teamRepository.delete({ name });
 
-    if (!team) {
-      throw new NotFoundException(`Team with name ${name} not found`);
+      if (result.affected === 0) {
+        throw new NotFoundException('No existe el team' );
+      }
+    } catch (error) {
+      console.error('Error al eliminar equipo por nombre:', error);
+      throw error; 
     }
-
-    return this.teamRepository.remove(team);
   }
+  
 
   
 }
